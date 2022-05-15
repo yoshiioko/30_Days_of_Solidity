@@ -1,0 +1,23 @@
+{
+  "name": "30_days_of_solidity",
+  "version": "1.0.0",
+  "description": "Doing the 30 Days of Solidity Challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoshiioko/30_Days_of_Solidity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yoshiioko/30_Days_of_Solidity/issues"
+  },
+  "homepage": "https://github.com/yoshiioko/30_Days_of_Solidity#readme",
+  "devDependencies": {
+    "truffle": "^5.5.14"
+  }
+}
