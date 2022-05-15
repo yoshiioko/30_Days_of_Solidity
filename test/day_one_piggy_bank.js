@@ -5,9 +5,37 @@ const DayOnePiggyBank = artifacts.require("DayOnePiggyBank");
  * Ethereum client
  * See docs: https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascript
  */
-contract("DayOnePiggyBank", function (/* accounts */) {
-  it("should assert true", async function () {
-    await DayOnePiggyBank.deployed();
-    return assert.isTrue(true);
+contract("DayOnePiggyBank", function (accounts) {
+  const [owner, nonOwner] = accounts;
+
+  beforeEach(async function () {
+    this.contract = await DayOnePiggyBank.new();
+  });
+
+  it("Initial contract balance is Zero", async function () {
+    let balance = await this.contract.getPiggyBankBalance();
+    assert.equal(balance, 0);
+  });
+
+  it("Deposit 1 Ether to Piggy Bank", async function () {
+    let depositValue = web3.utils.toWei("1", "ether");
+    await this.contract.deposit({ from: owner, value: depositValue });
+
+    let balance = await this.contract.getPiggyBankBalance();
+    assert.equal(balance, depositValue);
+  });
+
+  it("Withdraw all funds from Piggy Bank", async function () {
+    let depositValue = web3.utils.toWei("10", "ether");
+    await this.contract.sendTransaction({
+      from: nonOwner,
+      value: depositValue,
+    });
+
+    let oldBalance = await web3.eth.getBalance(owner);
+    await this.contract.withdraw({ from: owner });
+    let newBalance = await web3.eth.getBalance(owner);
+
+    assert.notEqual(oldBalance, newBalance);
   });
 });
