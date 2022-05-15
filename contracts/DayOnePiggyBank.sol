@@ -4,6 +4,7 @@ pragma solidity >=0.4.22 <0.9.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DayOnePiggyBank is Ownable {
+  event DepositEvent(address depositEvent, uint depositAmount);
   event WithdrawEvent(address withdrawAccount, uint withdrawAmount);
 
   constructor() {
@@ -15,6 +16,7 @@ contract DayOnePiggyBank is Ownable {
 
   function deposit() external payable onlyOwner {
     require(msg.value > 0, "Deposits must be greater than 0!");
+    emit DepositEvent(this.owner(), msg.value);
   }
 
   function withdraw() external onlyOwner {
