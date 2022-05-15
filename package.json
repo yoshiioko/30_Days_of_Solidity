@@ -19,5 +19,8 @@
   "homepage": "https://github.com/yoshiioko/30_Days_of_Solidity#readme",
   "devDependencies": {
     "truffle": "^5.5.14"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0"
   }
 }
