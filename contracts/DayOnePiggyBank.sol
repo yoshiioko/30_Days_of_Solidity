@@ -1,34 +1,40 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract DayOnePiggyBank is Ownable {
+contract DayOnePiggyBank {
+  address owner;
   event DepositEvent(address depositEvent, uint depositAmount);
   event WithdrawEvent(address withdrawAccount, uint withdrawAmount);
+  event DestroyEvent(string description);
 
   constructor() {
+    owner = msg.sender;
   }
 
-  function getPiggyBankBalance() external view onlyOwner returns (uint) {
+  modifier isOwner {
+    require(msg.sender == owner);
+    _;
+  }
+
+  function getPiggyBankBalance() external view isOwner returns (uint) {
     return address(this).balance;
   }
 
-  function deposit() external payable onlyOwner {
+  function deposit() external payable isOwner {
     require(msg.value > 0, "Deposits must be greater than 0!");
-    emit DepositEvent(this.owner(), msg.value);
+    emit DepositEvent(owner, msg.value);
   }
 
-  function withdraw() external onlyOwner {
-    address contractOwner = this.owner();
-    uint contractBalance = address(this).balance;
-
-    (bool sent, ) = contractOwner.call{value: contractBalance}("");
+  function withdraw() external isOwner {
+    (bool sent, ) = owner.call{value: address(this).balance}("");
     require(sent, "Withdraw process failed!");
-    emit WithdrawEvent(contractOwner, contractBalance);
+    emit WithdrawEvent(owner, address(this).balance);
   }
 
-  function destroy() external onlyOwner {}
+  function destroy() external isOwner {
+    emit DestroyEvent("Owner has deleted the contract from the blockchain");
+    selfdestruct(payable(owner));
+  }
 
   receive() external payable {}
 
