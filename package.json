@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/yoshiioko/30_Days_of_Solidity#readme",
   "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15",
     "ganache-cli": "^6.12.2",
     "truffle": "^5.5.14"
   },
