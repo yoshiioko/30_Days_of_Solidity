@@ -16,7 +16,7 @@ contract DayOnePiggyBank {
     _;
   }
 
-  function getPiggyBankBalance() external view isOwner returns (uint) {
+  function getPiggyBankBalance() external view returns (uint) {
     return address(this).balance;
   }
 
