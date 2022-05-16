@@ -1,4 +1,7 @@
 const DayOnePiggyBank = artifacts.require("DayOnePiggyBank");
+const {
+  expectEvent, // Assertions for emitted events
+} = require("@openzeppelin/test-helpers");
 
 /*
  * uncomment accounts to access the test accounts made available by the
@@ -26,7 +29,7 @@ contract("DayOnePiggyBank", function (accounts) {
   });
 
   it("Withdraw all funds from Piggy Bank", async function () {
-    let depositValue = web3.utils.toWei("10", "ether");
+    let depositValue = web3.utils.toWei("1", "ether");
     await this.contract.sendTransaction({
       from: nonOwner,
       value: depositValue,
@@ -37,5 +40,10 @@ contract("DayOnePiggyBank", function (accounts) {
     let newBalance = await web3.eth.getBalance(owner);
 
     assert.notEqual(oldBalance, newBalance);
+  });
+
+  it("Destory the contract from the blockchain", async function () {
+    const receipt = await this.contract.destroy({ from: owner });
+    expectEvent(receipt, "DestroyEvent");
   });
 });
